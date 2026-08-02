@@ -1,0 +1,26 @@
+name: Sync Latest Blog Posts
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  update-readme-with-blog:
+    name: Sync Medium / Hashnode Articles
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Pull RSS Feed Articles
+        uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          comment_tag_name: "BLOG-POST-LIST"
+          feed_list: "https://medium.com/feed/@successqwerty, https://hashnode.com/@successqwerty/rss.xml"
+          max_post_count: 5
